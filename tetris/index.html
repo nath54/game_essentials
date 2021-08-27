@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Menu - Tetris</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap" rel="stylesheet"> 
+        <link href="../global.css" rel="stylesheet" />
+    </head>
+    <body onload="init();">
+        <div class="">
+            <h2>Tetris :</h2>
+            <!-- Options -->
+            <!-- Size -->
+            <div class="col">
+                <h3>Taille de la grille :</h3>
+                <div class="row">
+                    <button class="bt_2" id="bt_1_1" onclick="set_options(1, 1);">small</button>
+                    <button class="bt_2_pressed" id="bt_1_2" onclick="set_options(1, 2);">normal</button>
+                    <button class="bt_2" id="bt_1_3" onclick="set_options(1, 3);">big</button>
+                    <button class="bt_2" id="bt_1_4" onclick="set_options(1, 4);">very big</button>
+                    <button class="bt_2" id="bt_1_5" onclick="set_options(1, 5);">Tower</button>
+                </div>
+            </div>
+            <!-- Colors -->
+            <div class="col">
+                <h3>Colors :</h3>
+                <div class="row">
+                    <button class="bt_2" id="bt_2_1" onclick="set_options(2, 1);">black and white</button>
+                    <button class="bt_2_pressed" id="bt_2_2" onclick="set_options(2, 2);">normal</button>
+                    <button class="bt_2" id="bt_2_3" onclick="set_options(2, 3);">color gradient</button>
+                    <button class="bt_2" id="bt_2_4" onclick="set_options(2, 4);">random</button>
+                </div>
+            </div>
+            <!-- Blocks -->
+            <div class="col">
+                <h3>Default blocks :</h3>
+                <div style="display:flex; flex-direction: row; flex-wrap: wrap;" id="buttons_default"></div>
+                <h3>Added blocks :</h3>
+                <div style="display:flex; flex-direction: row; flex-wrap: wrap;" id="buttons_added"></div>
+            </div>
+            <!-- Play -->
+            <hr />
+            <div class="">
+                <button class="bt_1" onclick="play();" style="font-size: 40px; margin-bottom: 100px;">Play</button>
+            </div>
+        </div>
+        <script src="blocks.js"></script>
+    </body>
+</html>
+<script>
+
+var options = [2, 2];
+var blocks = {};
+
+var defaults = ["I", "O", "T", "J", "L", "S", "Z"];
+var autres = ["+", "Coins", "Grand_I", "Grand_O_plein", "Grand_O", "Grand_T", "H", "II", "petit_u", "petit_v", "Rect", "U", "V", "x", "Y", "Y_gras"];
+
+function init(){
+    //
+    for(c of Object.keys(DATA_BLOCKS)){
+        //
+        if(defaults.includes(c)){
+            blocks[c] = true;
+        }
+        else{
+            blocks[c] = false;
+        }
+        // On ajoute le bouton
+        var bt = document.createElement("button");
+        bt.style.backgroundImage = "url('imgs/"+c+".png')";
+        bt.style.width = "50px";
+        bt.style.height = "50px";
+        bt.style.backgroundRepeat = "no-repeat";
+        bt.style.backgroundSize = "contain";
+        bt.style.backgroundPosition = "center";
+        bt.style.padding = "2px";
+        bt.setAttribute("onclick", "toggle_block('"+c+"');");
+        bt.setAttribute("id", "bt_"+c);
+        if(defaults.includes(c)){
+            bt.classList.add("bt_3_pressed");
+            document.getElementById("buttons_default").appendChild(bt);
+        }
+        else{
+            bt.classList.add("bt_3");
+            document.getElementById("buttons_added").appendChild(bt);
+        }
+        //
+    }
+    //
+}
+
+function toggle_block(tp_block){
+    var bt = document.getElementById("bt_"+tp_block);
+    if(bt.classList.contains("bt_3_pressed")){
+        bt.classList.replace("bt_3_pressed", "bt_3");
+    }
+    else{
+        bt.classList.replace("bt_3", "bt_3_pressed");
+    }
+    blocks[tp_block] = !blocks[tp_block];
+}
+
+function set_options(row, value){
+    // On enleve le style à l'ancien bouton
+    var bt = document.getElementById("bt_"+row+"_"+options[row-1]);
+    bt.classList.replace("bt_2_pressed", "bt_2");
+    // On met a jours dans la liste des options
+    options[row-1] = value;
+    // On enleve le style à l'ancien bouton
+    var bt = document.getElementById("bt_"+row+"_"+value);
+    bt.classList.replace("bt_2", "bt_2_pressed");
+}
+
+function play(){
+    var alloweds = [];
+    for(c of Object.keys(blocks)){
+        if(blocks[c]){
+            alloweds.push(c);
+        }
+    }
+    var tal = JSON.stringify(alloweds);
+    var url = "game.html?size="+options[0]+"&color="+options[1]+"&allowed="+tal;
+    window.location.href = url;
+}
+
+
+</script>

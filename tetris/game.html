@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Tetris</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap" rel="stylesheet">
+        <link href="../global.css" rel="stylesheet" />
+        <link href="game.css" rel="stylesheet" />
+    </head>
+    <body onload="init();">
+        <div class="horizontal_center row" style="margin: 25px;">
+            
+            <div id="div_grille" style="margin: 25px;">
+                <table id="grille"></table>
+            </div>
+
+            <div id="div_textes" class="vertical_center col" style="border: 1px solid white;">
+                <p id="score">score : 0</p>
+                
+                <div class="col">
+                    <h2>Commands :</h2>
+                    <p>left arrow : move left</p>
+                    <p>right arrow : move right</p>
+                    <p>up arrow : rotate left</p>
+                    <p>down arrow : move down</p>
+                    <p>space : rotate right</p>
+                    <p>p : pause/unpause</p>
+                    <p>q : abandon</p>
+                </div>
+                
+                <div>
+                    <p id="text_pause" style="display: none; color: yellow;">En pause</p>
+                </div>
+
+            </div>
+
+            <div class="col" id="div_fin" style="display: none; margin:25px;">
+                <h1 style="color: red;">You lose !</h1>
+                <p id="fin_score">Score : 0</p>
+                <p>Press R to restart the game</p>
+            </div>
+
+        </div>
+        <!-- Scripts -->
+        <script src="../global.js"></script>
+        <script src="blocks.js"></script>
+        <script src="tetris.js"></script>
+    </body>
+</html>
