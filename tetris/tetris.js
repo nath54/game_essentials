@@ -172,9 +172,26 @@ function bouge_block(dx, dy){
 }
 
 function est_bonne_position(lst_cases){
-    var est_block;
+    var est_block = false;
     for(c of lst_cases){
-        if(c[0]<0 || c[1] < 0 || c[0]>=window.tx || c[1]>=window.ty){
+        console.log("aa", c);
+        if(Object.is(c[0], -0)){
+            return false;
+        }
+        if(Object.is(c[1], -0)){
+            return false;
+        }
+        if(c[0]<0){
+            return false;
+        }
+        if(c[1]<0){
+            return false;
+        }
+        if(c[0]>=window.tx){
+            return false;
+        }
+
+        if(c[1]>=window.ty){
             return false;
         }
         est_block = false;
@@ -228,7 +245,8 @@ function rotate_block(agl){
 		}
 	}
     //
-    if(est_bonne_position(cases)){
+    var bon = est_bonne_position(cases);
+    if(bon === true){
         //
         for(c of window.current_block.cases){
             set_color([0, 0, 0], null, "case_"+c[0]+"_"+c[1]);
