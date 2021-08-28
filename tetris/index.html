@@ -33,6 +33,14 @@
                     <button class="bt_2" id="bt_2_4" onclick="set_options(2, 4);">random</button>
                 </div>
             </div>
+            <!-- Grid -->
+            <div class="col">
+                <h3>Grid :</h3>
+                <div class="row">
+                    <button class="bt_2" id="bt_3_1" onclick="set_options(3, 1);">hide grid</button>
+                    <button class="bt_2_pressed" id="bt_3_2" onclick="set_options(3, 2);">show grid</button>
+                </div>
+            </div>
             <!-- Blocks -->
             <div class="col">
                 <h3>Default blocks :</h3>
@@ -51,7 +59,7 @@
 </html>
 <script>
 
-var options = [2, 2];
+var options = [2, 2, 2];
 var blocks = {};
 
 var defaults = ["I", "O", "T", "J", "L", "S", "Z"];
@@ -121,7 +129,7 @@ function play(){
         }
     }
     var tal = JSON.stringify(alloweds);
-    var url = "game.html?size="+options[0]+"&color="+options[1]+"&allowed="+tal;
+    var url = "game.html?size="+options[0]+"&color="+options[1]+"&show_grid="+options[2]+"&allowed="+tal;
     window.location.href = url;
 }
 

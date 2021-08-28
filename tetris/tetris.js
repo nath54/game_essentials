@@ -12,6 +12,7 @@ window.speed = 240;
 window.last_augment_speed = 0;
 window.speed_augment_speed = 6000;
 window.case_size = 25;
+window.show_grid = 2;
 
 const TP_BLOCKS = Object.keys(DATA_BLOCKS);
 
@@ -33,6 +34,9 @@ function init(){
             else if(options[0] == "allowed"){
                 var aaa = dec(options[1]);
                 window.allowed_blocks = JSON.parse(aaa);
+            }
+            else if(options[0] == "show_grid"){
+                window.show_grid = parseInt(options[1]);
             }
             else if(options[0] == "size"){
                 if(options[1] == 1){ // SMALL
@@ -73,6 +77,9 @@ function init(){
             c.id = "case_"+x+"_"+y;
             c.style.width = ""+window.case_size+"px";
             c.style.height = ""+window.case_size+"px";
+            if(window.show_grid == 2){
+                c.style.border = "1px solid rgb(30, 30, 30)";
+            }
             set_color([0, 0, 0], c, null);
             if(y == 4){
                 c.style.borderBottomColor = "rgb(255, 0, 0)";
@@ -89,6 +96,18 @@ function init(){
     }
     else if(window.colors == 3){
         window.block_colors.last_cl = random_color();
+    }
+    // On prépare le block suivant
+    window.next_block = randtp();
+    // On prépare les images pour les blocks suivants
+    for(t of TP_BLOCKS){
+        var i = document.createElement("img");
+        i.src = "imgs/"+t+".png";
+        i.style.width = "30px";
+        i.style.height = "30px";
+        i.id = "img_"+t;
+        i.style.display = "none";
+        document.getElementById("imgs").appendChild(i);
     }
     // On lance le jeu
     window.requestAnimationFrame(mainloop);
@@ -174,13 +193,12 @@ function bouge_block(dx, dy){
 function est_bonne_position(lst_cases){
     var est_block = false;
     for(c of lst_cases){
-        console.log("aa", c);
         if(Object.is(c[0], -0)){
             return false;
         }
         if(Object.is(c[1], -0)){
             return false;
-        }
+        }c
         if(c[0]<0){
             return false;
         }
@@ -307,7 +325,10 @@ function chute_blocks(ligne){
 
 function physics(){
     if(window.current_block == null){
-        window.current_block = create_block(randint(2, window.tx-2), 3, randtp());
+        window.current_block = create_block(randint(2, window.tx-2), 3, window.next_block);
+        document.getElementById("img_"+window.next_block).style.display = "none";
+        window.next_block = randtp();
+        document.getElementById("img_"+window.next_block).style.display = "initial";
         rotate_block(randchoice([-90, 0, 90, 180]));
     }
     else{
@@ -401,27 +422,27 @@ window.addEventListener("keydown", function (event) {
     }
     switch (event.key) {
         case "ArrowDown":
-            if(!window.est_pause && peut_block_bouger(0, 1)){
+            if(!window.est_pause && !est_fini && peut_block_bouger(0, 1)){
                 bouge_block(0, 1);
             }
             break;
         case "ArrowUp":
-            if(!window.est_pause){
+            if(!window.est_pause && !est_fini ){
                 rotate_block(-90);
             }
             break;
         case "ArrowLeft":
-            if(!window.est_pause && peut_block_bouger(-1, 0)){
+            if(!window.est_pause && !est_fini  && peut_block_bouger(-1, 0)){
                 bouge_block(-1, 0);
             }
             break;
         case "ArrowRight":
-            if(!window.est_pause && peut_block_bouger(1, 0)){
+            if(!window.est_pause && !est_fini  && peut_block_bouger(1, 0)){
                 bouge_block(1, 0);
             }
             break;
         case " ":
-            if(!window.est_pause){
+            if(!window.est_pause && !est_fini ){
                 rotate_block(90);
             }
             break;
