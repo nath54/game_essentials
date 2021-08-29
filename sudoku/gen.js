@@ -4,7 +4,7 @@ function randint(a, b){
 }
 
 function rchoice(lst){
-    return lst[randint(0, lst.length - 1)];
+    return lst[randint(0, lst.length)];
 }
 
 function range(a, b){
